@@ -20,7 +20,7 @@ route.post('/login', async (req, res) => {
   ///compare passwords
   if (await bcrypt.compare(password, signinUser.password)) {
     //// generate a token for the httpcookie
-    const token = generateAccessToken(process.env.JWT_SECRET, '7d');
+    const token = generateAccessToken(email, '7d');
     ///set the cookie
     res.cookie('accessCookie', token, {
       secure: process.env.NODE_ENV !== 'development',
