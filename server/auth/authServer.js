@@ -1,14 +1,21 @@
-const app = require('express')();
-const cors = require('cors');
-const mongoose = require('mongoose');
-const dotenv = require('dotenv').config();
+import express from 'express';
+import cors from 'cors';
+import pkg from 'mongoose';
+import dotenv from 'dotenv';
+import { route } from './routes/routes.js';
 
+const app = express();
+const { connect } = pkg;
+dotenv.config();
+
+app.use(express.json());
+app.use(cors());
+app.use(route);
 ///connect to mongodb database
-mongoose
-  .connect(process.env.MONGODB_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+connect(process.env.MONGODB_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
   .then(() => {
     console.log('connected to mongodb!');
   })
@@ -16,12 +23,10 @@ mongoose
     console.log(e);
   });
 
-app.use(cors());
-
-app.get('/', (req, res) => {
-  res.status(200).send({ message: 'Get success' });
-});
-
 app.listen(8000, () => {
   console.log('auth server is listening on port 8000');
+});
+
+app.get('/', (req, res) => {
+  res.status(200).send({ message: 'get success' });
 });
