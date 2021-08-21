@@ -3,13 +3,21 @@ import cors from 'cors';
 import pkg from 'mongoose';
 import dotenv from 'dotenv';
 import { route } from './routes/routes.js';
+import requestMethods from './middlewares/requestMethods.js';
+import cookieParser from 'cookie-parser';
 
 const app = express();
 const { connect } = pkg;
 dotenv.config();
-
+app.use(cookieParser());
+app.use(
+  cors({
+    credentials: true,
+    origin: 'http://localhost:3000',
+  })
+);
 app.use(express.json());
-app.use(cors());
+app.use(requestMethods);
 app.use(route);
 ///connect to mongodb database
 connect(process.env.MONGODB_URI, {
