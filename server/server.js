@@ -3,7 +3,8 @@ const httpServer = require('http').createServer(app);
 const cors = require('cors');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv').config();
-
+const cookieparser = require('cookie-parser');
+const route = require('./routes/route');
 ///connect to mongodb database
 mongoose
   .connect(process.env.MONGODB_URI, {
@@ -23,8 +24,15 @@ const io = require('socket.io')(httpServer, {
     origin: '*',
   },
 });
-app.use(cors());
+app.use(cookieparser());
+app.use(
+  cors({
+    credentials: true,
+    origin: 'http://localhost:3000',
+  })
+);
 
+app.use(route);
 app.get('/', (req, res) => {
   res.status(200).send({ message: 'Get success' });
 });
@@ -44,7 +52,7 @@ app.get('/', (req, res) => {
 // });
 
 httpServer.listen(8888, () => {
-  console.log('httpserver is listenin on port 8888');
+  console.log('httpserver is listening on port 8888');
 });
 
 app.listen(5000, () => {

@@ -1,6 +1,5 @@
 import { Router } from 'express';
 import { generateAccessToken } from '../utils/utils.js';
-import { authorize } from '../middlewares/authorization.js';
 import { user } from '../models/user.js';
 import bcrypt from 'bcrypt';
 import dayjs from 'dayjs';
