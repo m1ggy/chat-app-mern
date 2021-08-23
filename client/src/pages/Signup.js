@@ -9,9 +9,29 @@ function Signup() {
   const [showPass, setShowPass] = useState(false);
   const { message, setMessage, signup } = useAuth();
 
+  function validateEmail(email) {
+    const re =
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+  }
+
   function handleSubmit(e) {
     e.preventDefault();
-    signup({ email, password, name });
+    if (validateEmail(email)) {
+      if (password.length >= 8) {
+        return signup({ email, password, name });
+      }
+      return setMessage({
+        content: 'Password should be 8 or more characters!',
+        show: true,
+        variant: 'warning',
+      });
+    }
+    setMessage({
+      content: 'Please make sure the email is valid!',
+      show: true,
+      variant: 'warning',
+    });
   }
   return (
     <Col
