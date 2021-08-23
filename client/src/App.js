@@ -2,13 +2,17 @@ import './App.css';
 import Login from './pages/Login';
 import { Switch, Route, BrowserRouter as Router } from 'react-router-dom';
 import Signup from './pages/Signup';
+import PrivateRoute from './routes/PrivateRoute';
+import Chat from './pages/Chat';
 function App() {
   return (
     <Router>
       <Switch>
+        <PrivateRoute component={Chat} path='/chats' />
         <Route path='/signup'>
           <Signup />
         </Route>
+
         <Route path='/' exact>
           <Login />
         </Route>

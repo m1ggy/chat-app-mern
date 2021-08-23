@@ -2,9 +2,11 @@ import { useState } from 'react';
 import { Card, Col, Row, Form, Button, Alert } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
+import { useStore } from '../hooks/useStore';
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const user = useStore((state) => state.user);
 
   const { login, message, setMessage } = useAuth();
   function handleSubmit(e) {
@@ -24,6 +26,7 @@ function Login() {
         position: 'relative',
       }}
     >
+      {user.fName && <p>{user.fName}</p>}
       <Row>
         <Card
           as='form'

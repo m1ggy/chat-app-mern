@@ -38,18 +38,23 @@ route.post('/signup', async (req, res) => {
   if (email == null || password == null || fName == null || lName == null)
     return res.status(400).send({ message: 'Please provide all information!' });
 
-  //// find if the user already exist
-  const existingUser = await user
-    .findOne({
-      email,
-    })
-    .exec();
+  try {
+    const existingUser = await user
+      .findOne({
+        email,
+      })
+      .exec();
 
-  ///check if user does exists
-  if (existingUser != null)
-    return res
-      .status(400)
-      .send({ message: 'a User with this email already exists.' });
+    ///check if user does exists
+    if (existingUser != null)
+      return res
+        .status(400)
+        .send({ message: 'a User with this email already exists.' });
+  } catch (e) {
+    console.log(e);
+  }
+
+  //// find if the user already exist
 
   ///hash the password and add to database
   try {

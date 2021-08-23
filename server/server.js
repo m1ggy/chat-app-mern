@@ -36,20 +36,21 @@ app.use(route);
 app.get('/', (req, res) => {
   res.status(200).send({ message: 'Get success' });
 });
-///socket io connection
+//socket io connection
 
-// io.on('connection', (socket) => {
-//   ///add user to connected users
-//   connectedUsers.push(socket.id);
-//   console.log(connectedUsers);
+let connectedUsers = [];
+io.on('connection', (socket) => {
+  ///add user to connected users
+  connectedUsers.push(socket.id);
+  console.log(connectedUsers);
 
-//   ////remove user from the connected users array
-//   socket.on('disconnect', (reason) => {
-//     connectedUsers = connectedUsers.filter((user) => user != socket.id);
-//     console.log(connectedUsers);
-//     console.log(reason);
-//   });
-// });
+  ////remove user from the connected users array
+  socket.on('disconnect', (reason) => {
+    connectedUsers = connectedUsers.filter((user) => user != socket.id);
+    console.log(connectedUsers);
+    console.log(reason);
+  });
+});
 
 httpServer.listen(8888, () => {
   console.log('httpserver is listening on port 8888');

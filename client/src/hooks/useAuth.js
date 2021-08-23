@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import axios from 'axios';
-
+import { useStore, userInitialState } from './useStore';
+import { useHistory } from 'react-router-dom';
 axios.defaults.withCredentials = true;
-
 const useAuth = () => {
+  const setUser = useStore((state) => state.setUser);
+  const history = useHistory();
   const [message, setMessage] = useState({
     content: '',
     show: false,
@@ -22,7 +24,15 @@ const useAuth = () => {
           variant: 'success',
         });
         axios.get('http://localhost:5000/user').then((res) => {
-          console.log(res.data);
+          const { fName, lName, email, conversations } = res.data;
+          setUser({
+            fName,
+            lName,
+            email,
+            authenticated: true,
+            conversations,
+          });
+          history.push('/chats');
         });
       })
       .catch((e) => {
@@ -59,11 +69,16 @@ const useAuth = () => {
       });
   }
 
+  function signout() {
+    setUser({ ...userInitialState });
+  }
+
   return {
     login,
     message,
     setMessage,
     signup,
+    signout,
   };
 };
 
